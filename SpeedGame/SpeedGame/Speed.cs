@@ -1,6 +1,8 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 public class Card
 {
     public enum Suites
@@ -107,3 +109,105 @@ public class Deck
         }
     }
 }
+
+public class PlayerStack
+{
+    List<Card> hand = new List<Card>();
+    public void CreatePlayerStack(Deck d)
+    {
+        for(int i = 0; i < 5; i++)
+        {
+            hand.Add(d.Cards[0]);
+            d.Cards.Remove(d.Cards[0]);
+        }
+    }
+    public void AddToHand(Card c)
+    {
+        hand.Add((Card)c);
+    }
+    public void RemoveFromHand(Card c)
+    {
+       hand.Remove(c);
+    }
+}
+public class DrawStack
+{
+    Stack<Card> stack = new Stack<Card>();
+    public void CreateDrawStack(Deck d)
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            stack.Push(d.Cards[0]);
+            d.Cards.Remove(d.Cards[0]);
+        }
+    }
+
+    public Card RemoveFromDrawStack()
+    {
+        Card card = stack.Pop();
+        return card;
+    }
+}
+
+public class PlayStack
+{
+    Stack<Card> stack = new Stack<Card>();
+    public void CreatePlayStack(Deck d)
+    {
+        stack.Push(d.Cards[0]);
+        d.Cards.Remove(d.Cards[0]);
+    }
+    public void AddToPlayStack(Card c)
+    {
+        stack.Push((Card)c);
+    }
+    public Card RemoveFromPlayStack()
+    {
+        Card card = stack.Pop();
+        return card;
+    }
+}
+public class ExtraStack
+{
+    Stack<Card> stack = new Stack<Card>();
+    public void CreateExtraStack(Deck d)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            stack.Push(d.Cards[0]);
+            d.Cards.Remove(d.Cards[0]);
+        }
+    }
+
+    public Card RemoveFromExtraStack()
+    {
+        Card card = stack.Pop();
+        return card;
+    }
+}
+//You can add these to a main to call this program and it will run up to this point
+/*          Deck deck = new Deck();
+            deck.FillDeck();
+            deck.Shuffle();
+            deck.PrintDeck();
+            //Create hand
+            PlayerStack playerStack1 = new PlayerStack();
+            playerStack1.CreatePlayerStack(deck);
+            PlayerStack playerStack2 = new PlayerStack();
+            playerStack2.CreatePlayerStack(deck);
+            //Create Draw Piles
+            DrawStack drawStack1 = new DrawStack();
+            drawStack1.CreateDrawStack(deck);
+            DrawStack drawStack2 = new DrawStack();
+            drawStack2.CreateDrawStack(deck);
+            //Create Stacks to play on
+            PlayStack playStack1 = new PlayStack();
+            playStack1.CreatePlayStack(deck);
+            PlayStack playstack2 = new PlayStack();
+            playstack2.CreatePlayStack(deck);
+            //Create Stacks of extras
+            ExtraStack extraStack1 = new ExtraStack();
+            extraStack1.CreateExtraStack(deck);
+            ExtraStack extraStack2 = new ExtraStack();
+            extraStack2.CreateExtraStack(deck);
+            Console.ReadLine();*/
