@@ -224,3 +224,42 @@ public class ExtraStack
             ExtraStack extraStack2 = new ExtraStack();
             extraStack2.CreateExtraStack(deck);
             Console.ReadLine();*/
+
+//Add this to main for a single iteration of playing a valid card in console
+/*          Console.WriteLine("Play stack:");
+            Console.WriteLine(playStack1.ShowTop().Name + " (1)");
+            Console.WriteLine(playstack2.ShowTop().Name + " (2)");
+            Console.WriteLine("Enter a card to play from your hand:");
+            playerStack1.PrintHand();
+            int choice = int.Parse(Console.ReadLine()) - 1;
+            Card cardChoice = playerStack1.CardChoice(choice);
+            Console.WriteLine("Enter a the stack to place your card on:");
+            int stackChoice = int.Parse(Console.ReadLine());
+            if (stackChoice == 1)
+            {
+                if (cardChoice.Value == playStack1.ShowTop().Value - 1 || cardChoice.Value == playStack1.ShowTop().Value + 1)
+                {
+                    playStack1.AddToPlayStack(cardChoice);
+                    playerStack1.RemoveFromHand(cardChoice);
+                    playerStack1.AddToHand(drawStack1.RemoveFromDrawStack());
+                    playerStack1.PrintHand();
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Play");
+                }
+            }
+            else if (stackChoice == 2)
+            {
+                if (cardChoice.Value == playstack2.ShowTop().Value - 1 || cardChoice.Value == playstack2.ShowTop().Value + 1)
+                {
+                    playstack2.AddToPlayStack(cardChoice);
+                    playerStack1.RemoveFromHand(cardChoice);
+                    playerStack1.AddToHand(drawStack1.RemoveFromDrawStack());
+                    playerStack1.PrintHand();
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Play");
+                }
+            }*/
