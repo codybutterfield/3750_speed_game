@@ -129,6 +129,19 @@ public class PlayerStack
     {
        hand.Remove(c);
     }
+    public List<Card> getHand()
+    {
+        return hand;
+    }
+    public List<string> ReturnHand()
+    {
+        List<string> handStr = new List<string>();
+        foreach (Card c in hand)
+        {   
+            handStr.Add(c.Name);
+        }
+        return handStr;
+    }
 }
 public class DrawStack
 {
