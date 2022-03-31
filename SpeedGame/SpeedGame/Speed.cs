@@ -142,6 +142,11 @@ public class PlayerStack
         }
         return handStr;
     }
+    public Card CardChoice(int index)
+    {
+        Card choice = hand[index];
+        return choice;
+    }
 }
 public class DrawStack
 {
@@ -177,6 +182,11 @@ public class PlayStack
     public Card RemoveFromPlayStack()
     {
         Card card = stack.Pop();
+        return card;
+    }
+    public Card ShowTop()
+    {
+        Card card = stack.Peek();
         return card;
     }
 }
