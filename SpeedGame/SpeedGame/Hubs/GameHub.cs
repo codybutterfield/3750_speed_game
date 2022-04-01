@@ -8,16 +8,7 @@ namespace SignalRChat.Hubs
     }
     public class GameHub : Hub
     {
-        public async Task SendMessage(string user, string message)
-        {
-            if (UserHandler.ConnectedIds.Count == 2)
-            {
-                Response.Redirect("https://localhost:44385//game.html");
-            }
-            //await Clients.All.SendAsync("ReceiveMessage", user, message);
-        }
-
-        public async Task GameMessages(string user, string message)
+        public async Task SendMessage()
         {
             if (UserHandler.ConnectedIds.Count == 2)
             {
@@ -73,11 +64,15 @@ namespace SignalRChat.Hubs
 
                 await Clients.Client(p1).SendAsync("DisplayHand", playerStack1.ReturnHand());
                 await Clients.Client(p2).SendAsync("DisplayHand", playerStack2.ReturnHand());
-
-
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
+
+        /*public async Task GameMessages(string user, string message)
+        {
+            
+            //await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }*/
 
         public override Task OnConnectedAsync()
         {
