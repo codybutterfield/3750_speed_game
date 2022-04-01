@@ -159,6 +159,10 @@ public class DrawStack
             d.Cards.Remove(d.Cards[0]);
         }
     }
+    public Stack<Card> getDraw()
+    {
+        return stack;
+    }
 
     public Card RemoveFromDrawStack()
     {
@@ -206,6 +210,15 @@ public class ExtraStack
     {
         Card card = stack.Pop();
         return card;
+    }
+    public bool isEmpty()
+    {
+        bool isEmpty = true;
+        if (stack.Count > 0)
+        {
+            isEmpty = true;
+        }
+        return isEmpty;
     }
 }
 //You can add these to a main to call this program and it will run up to this point

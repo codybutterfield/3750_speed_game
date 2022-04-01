@@ -23,6 +23,10 @@ connection.on("DisplayHand", function (hand) {
     li.textContent = `${hand}`;
 });
 
+connection.on("UpdateGame", function (playerStack1, oppStackCount, drawStack1, oppDrawStack2, playStack1Top, playstack2Top, exStack1Flg, exStack2Flg) {
+    console.log("test");
+});
+
 connection.start().then(function () {
     document.getElementById("playButton").disabled = false;
 }).catch(function (err) {

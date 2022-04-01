@@ -61,9 +61,11 @@ namespace SignalRChat.Hubs
                 ExtraStack extraStack2 = new ExtraStack();
                 extraStack2.CreateExtraStack(deck);
 
+                int x = playerStack1.getHand().Count;
 
-                await Clients.Client(p1).SendAsync("DisplayHand", playerStack1.ReturnHand());
-                await Clients.Client(p2).SendAsync("DisplayHand", playerStack2.ReturnHand());
+
+                await Clients.Client(p1).SendAsync("UpdateGame", playerStack1, playerStack2.getHand().Count, drawStack1, drawStack2.getDraw().Count, playStack1.ShowTop(), playstack2.ShowTop(), extraStack1.isEmpty(), extraStack2.isEmpty());
+                await Clients.Client(p2).SendAsync("UpdateGame", playerStack2, playerStack1.getHand().Count, drawStack2, drawStack1.getDraw().Count, playStack1.ShowTop(), playstack2.ShowTop(), extraStack1.isEmpty(), extraStack2.isEmpty());
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
