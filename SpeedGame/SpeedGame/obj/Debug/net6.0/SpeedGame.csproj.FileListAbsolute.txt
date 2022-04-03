@@ -50,3 +50,4 @@ C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.dl
 C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\ref\SpeedGame.dll
 C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.pdb
 C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.genruntimeconfig.cache
+C:\Users\codyb\Documents\Computer Science\SE2\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.csproj.AssemblyReference.cache

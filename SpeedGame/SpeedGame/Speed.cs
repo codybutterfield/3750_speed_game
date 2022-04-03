@@ -63,6 +63,50 @@ public class Card
         }
     }
 
+    public string associatedImg
+    {
+        get
+        {
+            string imgSrc = string.Empty;
+            switch (Value)
+            {
+                case (14):
+                    imgSrc += "a";
+                    break;
+                case (13):
+                    imgSrc += "k";
+                    break;
+                case (12):
+                    imgSrc += "q";
+                    break;
+                case (11):
+                    imgSrc += "j";
+                    break;
+                default:
+                    imgSrc += Value.ToString();
+                    break;
+            }
+
+            switch(Suite.ToString())
+            {
+                case ("Hearts"):
+                    imgSrc += "Heart.png";
+                    break;
+                case ("Diamonds"):
+                    imgSrc += "Diamond.png";
+                    break;
+                case ("Clubs"):
+                    imgSrc += "Club.png";
+                    break;
+                default:
+                    imgSrc += "Spade.png";
+                    break;
+            }
+
+            return imgSrc;
+        }
+    }
+
     public Card(int Value, Suites Suite)
     {
         this.Value = Value;
