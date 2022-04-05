@@ -45,19 +45,45 @@ document.getElementById("playButton").addEventListener("click", function (event)
 
 document.getElementById("playerCard1").addEventListener("click", function (event) {
     selected = 0;
+    document.getElementById("playerCard1").border = 1;
+    document.getElementById("playerCard2").border = 0;
+    document.getElementById("playerCard3").border = 0;
+    document.getElementById("playerCard4").border = 0;
+    document.getElementById("playerCard5").border = 0;
 })
 
 document.getElementById("playerCard2").addEventListener("click", function (event) {
     selected = 1;
+    document.getElementById("playerCard1").border = 0;
+    document.getElementById("playerCard2").border = 1;
+    document.getElementById("playerCard3").border = 0;
+    document.getElementById("playerCard4").border = 0;
+    document.getElementById("playerCard5").border = 0;
 })
 document.getElementById("playerCard3").addEventListener("click", function (event) {
     selected = 2;
+    document.getElementById("playerCard1").border = 0;
+    document.getElementById("playerCard2").border = 0;
+    document.getElementById("playerCard3").border = 1;
+    document.getElementById("playerCard4").border = 0;
+    document.getElementById("playerCard5").border = 0;
 })
 document.getElementById("playerCard4").addEventListener("click", function (event) {
     selected = 3;
+    document.getElementById("playerCard1").border = 0;
+    document.getElementById("playerCard2").border = 0;
+    document.getElementById("playerCard3").border = 0;
+    document.getElementById("playerCard4").border = 1;
+    document.getElementById("playerCard5").border = 0;
+
 })
 document.getElementById("playerCard5").addEventListener("click", function (event) {
     selected = 4;
+    document.getElementById("playerCard1").border = 0;
+    document.getElementById("playerCard2").border = 0;
+    document.getElementById("playerCard3").border = 0;
+    document.getElementById("playerCard4").border = 0;
+    document.getElementById("playerCard5").border = 1;
 })
 document.getElementById("playStack1").addEventListener("click", function (event) {
     connection.invoke("compareCard", selected, Playstack1, hand1).catch(function (err) {
