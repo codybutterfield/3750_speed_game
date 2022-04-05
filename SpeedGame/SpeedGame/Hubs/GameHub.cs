@@ -28,41 +28,35 @@ namespace SignalRChat.Hubs
                         p2 = a;
                     }
                 }
-
                 Deck deck = new Deck();
-                PlayerStack playerStack1 = new PlayerStack();
-                PlayerStack playerStack2 = new PlayerStack();
-                DrawStack drawStack1 = new DrawStack();
-                DrawStack drawStack2 = new DrawStack();
-                PlayStack playStack1 = new PlayStack();
-                PlayStack playStack2 = new PlayStack();
-                ExtraStack extraStack1 = new ExtraStack();
-                ExtraStack extraStack2 = new ExtraStack();
-
                 deck.FillDeck();
                 deck.Shuffle();
-                //deck.PrintDeck();
-                //Create hand
-                
+                PlayerStack playerStack1 = new PlayerStack();
+                PlayerStack playerStack2 = new PlayerStack();
+                ExtraStack extraStack1 = new ExtraStack();
+                ExtraStack extraStack2 = new ExtraStack();
+                PlayStack playStack1 = new PlayStack();
+                PlayStack playStack2 = new PlayStack();
+                DrawStack drawStack1 = new DrawStack();
+                DrawStack drawStack2 = new DrawStack();
                 playerStack1.CreatePlayerStack(deck);
-                
+
                 playerStack2.CreatePlayerStack(deck);
                 //Create Draw Piles
-                
+
                 drawStack1.CreateDrawStack(deck);
-                
+
                 drawStack2.CreateDrawStack(deck);
                 //Create Stacks to play on
-                
+
                 playStack1.CreatePlayStack(deck);
-                
+
                 playStack2.CreatePlayStack(deck);
                 //Create Stacks of extras
-                
-                extraStack1.CreateExtraStack(deck);
-                
-                extraStack2.CreateExtraStack(deck);
 
+                extraStack1.CreateExtraStack(deck);
+
+                extraStack2.CreateExtraStack(deck);
 
                 string p1Hand = JsonConvert.SerializeObject(playerStack1.getHand());
                 string p2Hand = JsonConvert.SerializeObject(playerStack2.getHand());
@@ -77,12 +71,17 @@ namespace SignalRChat.Hubs
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task selectCard(int index)
+        public async Task compareCard(int index, Card c, List<Card> h)
         {
-            Console.WriteLine("1: " + playerStack1.getHand().Count);
+            if (h[index].Value == c.Value + 1 || h[index].Value == c.Value - 1)
+            {
+                Console.WriteLine(c.Name);
+            }
+            else
+            {
+                return;
+            }
 
-            Card cardChoice = playerStack1.CardChoice(index);
-            Console.WriteLine("2:" + cardChoice.Value);
         }
 
         public override Task OnConnectedAsync()

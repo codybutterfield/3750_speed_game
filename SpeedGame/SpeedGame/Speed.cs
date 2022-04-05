@@ -269,7 +269,9 @@ public class ExtraStack
 
 public class GameLogic
 {
+   
     Card selected;
+
     public void selectedCard(Card c)
     {
         selected = c;
