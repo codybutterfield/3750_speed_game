@@ -51,3 +51,5 @@ C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\ref\SpeedGam
 C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.pdb
 C:\Users\tobyr\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.genruntimeconfig.cache
 C:\Users\codyb\Documents\Computer Science\SE2\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.csproj.AssemblyReference.cache
+C:\Users\codyb\Documents\Computer Science\SE2\3750_speed_game\SpeedGame\SpeedGame\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\codyb\Documents\Computer Science\SE2\3750_speed_game\SpeedGame\SpeedGame\obj\Debug\net6.0\SpeedGame.csproj.CopyComplete

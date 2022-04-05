@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace SignalRChat.Hubs
 {
@@ -8,7 +9,7 @@ namespace SignalRChat.Hubs
     }
     public class GameHub : Hub
     {
-        public async Task SendMessage()
+        public async Task InitiateGame()
         {
             if (UserHandler.ConnectedIds.Count == 2)
             {
@@ -27,53 +28,62 @@ namespace SignalRChat.Hubs
                         p2 = a;
                     }
                 }
-                Console.WriteLine("p1: " + p1);
-                Console.WriteLine("p2: " + p2);
-                Console.WriteLine("ready to play!");
-
-                List<int> listInts = new List<int>();
-                listInts.Add(1);
-                listInts.Add(2);
-                listInts.Add(3);
 
                 Deck deck = new Deck();
+                PlayerStack playerStack1 = new PlayerStack();
+                PlayerStack playerStack2 = new PlayerStack();
+                DrawStack drawStack1 = new DrawStack();
+                DrawStack drawStack2 = new DrawStack();
+                PlayStack playStack1 = new PlayStack();
+                PlayStack playStack2 = new PlayStack();
+                ExtraStack extraStack1 = new ExtraStack();
+                ExtraStack extraStack2 = new ExtraStack();
+
                 deck.FillDeck();
                 deck.Shuffle();
-                deck.PrintDeck();
+                //deck.PrintDeck();
                 //Create hand
-                PlayerStack playerStack1 = new PlayerStack();
+                
                 playerStack1.CreatePlayerStack(deck);
-                PlayerStack playerStack2 = new PlayerStack();
+                
                 playerStack2.CreatePlayerStack(deck);
                 //Create Draw Piles
-                DrawStack drawStack1 = new DrawStack();
+                
                 drawStack1.CreateDrawStack(deck);
-                DrawStack drawStack2 = new DrawStack();
+                
                 drawStack2.CreateDrawStack(deck);
                 //Create Stacks to play on
-                PlayStack playStack1 = new PlayStack();
+                
                 playStack1.CreatePlayStack(deck);
-                PlayStack playstack2 = new PlayStack();
-                playstack2.CreatePlayStack(deck);
+                
+                playStack2.CreatePlayStack(deck);
                 //Create Stacks of extras
-                ExtraStack extraStack1 = new ExtraStack();
+                
                 extraStack1.CreateExtraStack(deck);
-                ExtraStack extraStack2 = new ExtraStack();
+                
                 extraStack2.CreateExtraStack(deck);
 
-                Console.WriteLine("Hello, this is a test:" + (playerStack1.getHand())[0].associatedImg);
 
-                await Clients.Client(p1).SendAsync("UpdateGame", playerStack1, playerStack2.getHand().Count, drawStack1, drawStack2.getDraw().Count, playStack1.ShowTop(), playstack2.ShowTop(), extraStack1.isEmpty(), extraStack2.isEmpty());
-                await Clients.Client(p2).SendAsync("UpdateGame", playerStack2, playerStack1.getHand().Count, drawStack2, drawStack1.getDraw().Count, playStack1.ShowTop(), playstack2.ShowTop(), extraStack1.isEmpty(), extraStack2.isEmpty());
+                string p1Hand = JsonConvert.SerializeObject(playerStack1.getHand());
+                string p2Hand = JsonConvert.SerializeObject(playerStack2.getHand());
+                string ps1 = JsonConvert.SerializeObject(playStack1.ShowTop());
+                string ps2 = JsonConvert.SerializeObject(playStack2.ShowTop());
+                string ds1 = JsonConvert.SerializeObject(drawStack1.getDraw());
+                string ds2 = JsonConvert.SerializeObject(drawStack2.getDraw());
+
+                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, extraStack1.isEmpty(), extraStack2.isEmpty());
+                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, extraStack1.isEmpty(), extraStack2.isEmpty());
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        /*public async Task GameMessages(string user, string message)
+        public async Task selectCard(int index)
         {
-            
-            //await Clients.All.SendAsync("ReceiveMessage", user, message);
-        }*/
+            Console.WriteLine("1: " + playerStack1.getHand().Count);
+
+            Card cardChoice = playerStack1.CardChoice(index);
+            Console.WriteLine("2:" + cardChoice.Value);
+        }
 
         public override Task OnConnectedAsync()
         {

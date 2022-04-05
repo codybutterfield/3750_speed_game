@@ -67,7 +67,7 @@ public class Card
     {
         get
         {
-            string imgSrc = string.Empty;
+            string imgSrc = "/img/";
             switch (Value)
             {
                 case (14):
@@ -263,6 +263,16 @@ public class ExtraStack
             isEmpty = true;
         }
         return isEmpty;
+    }
+}
+
+
+public class GameLogic
+{
+    Card selected;
+    public void selectedCard(Card c)
+    {
+        selected = c;
     }
 }
 //You can add these to a main to call this program and it will run up to this point
