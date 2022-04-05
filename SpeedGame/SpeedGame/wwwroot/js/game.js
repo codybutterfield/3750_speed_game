@@ -59,14 +59,14 @@ document.getElementById("playerCard4").addEventListener("click", function (event
 document.getElementById("playerCard5").addEventListener("click", function (event) {
     selected = 4;
 })
-document.getElementById("playstack1").addEventListener("click", function (event) {
-    connection.invoke("compareCard", selected, PlayStack1, hand1).catch(function (err) {
+document.getElementById("playStack1").addEventListener("click", function (event) {
+    connection.invoke("compareCard", selected, Playstack1, hand1).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
-document.getElementById("playstack2").addEventListener("click", function (event) {
-    connection.invoke("compareCard", selected, PlayStack2, hand1).catch(function (err) {
+document.getElementById("playStack2").addEventListener("click", function (event) {
+    connection.invoke("compareCard", selected, JSON.stringify(Playstack2), JSON.stringify(hand1)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
