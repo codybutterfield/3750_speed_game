@@ -48,19 +48,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\codyb\\.nuget\\packages\\": {}
+    "C:\\Users\\tobyr\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\codyb\\Documents\\Computer Science\\SE2\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
+      "projectUniqueName": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
       "projectName": "SpeedGame",
-      "projectPath": "C:\\Users\\codyb\\Documents\\Computer Science\\SE2\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
-      "packagesPath": "C:\\Users\\codyb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\codyb\\Documents\\Computer Science\\SE2\\3750_speed_game\\SpeedGame\\SpeedGame\\obj\\",
+      "projectPath": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
+      "packagesPath": "C:\\Users\\tobyr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\codyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tobyr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

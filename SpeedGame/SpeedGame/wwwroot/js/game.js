@@ -42,7 +42,7 @@ connection.on("CreateGame", function (playerStack, oppStackCount, playerDrawStac
     document.getElementById("playButton").style.display = "none";
 });
 
-connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, exStack1, exStack2, playStack1Top, stackNum) {
+connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, exStack1, exStack2, playStack1Top, stackNum, handCount) {
     HandJS = JSON.parse(playerStack);
     PlayerDrawStackJS = JSON.parse(playerDrawStack);
     PlayStack1JS = JSON.parse(playStack1);
@@ -58,16 +58,36 @@ connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, 
         PlayStack2JSTop = JSON.parse(playStack1Top);
         document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
     }
-    
-    document.getElementById("playerCard1").src = HandJS[0].associatedImg;
-    document.getElementById("playerCard2").src = HandJS[1].associatedImg;
-    document.getElementById("playerCard3").src = HandJS[2].associatedImg;
-    document.getElementById("playerCard4").src = HandJS[3].associatedImg;
-    document.getElementById("playerCard5").src = HandJS[4].associatedImg;
+
+    if (handCount > 0) {
+        document.getElementById("playerCard1").src = HandJS[0].associatedImg;
+    } else {
+        document.getElementById("playerCard1").src = "/img/blank.png";
+    }
+    if (handCount > 1) {
+        document.getElementById("playerCard2").src = HandJS[1].associatedImg;
+    } else {
+        document.getElementById("playerCard2").src = "/img/blank.png";
+    }
+    if (handCount > 2) {
+        document.getElementById("playerCard3").src = HandJS[2].associatedImg;
+    } else {
+        document.getElementById("playerCard3").src = "/img/blank.png";
+    }
+    if (handCount > 3) {
+        document.getElementById("playerCard4").src = HandJS[3].associatedImg;
+    } else {
+        document.getElementById("playerCard4").src = "/img/blank.png";
+    }
+    if (handCount > 4) {
+        document.getElementById("playerCard5").src = HandJS[4].associatedImg;
+    } else {
+        document.getElementById("playerCard5").src = "/img/blank.png";
+    }
     document.getElementById("playButton").style.display = "none";
 });
 
-connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum) {
+connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum, handCount) {
     OpponentDrawStackCountJS = oppDrawStackCt;
 
     document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + OpponentDrawStackCountJS + " Cards";
@@ -78,6 +98,32 @@ connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum
     } else {
         PlayStack2JSTop = JSON.parse(playStack1Top);
         document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
+    }
+    
+    if (handCount > 0) {
+        document.getElementById("oppCard1").src = "/img/back.png";
+    } else {                     
+        document.getElementById("oppCard1").src = "/img/blank.png";
+    }                           
+    if (handCount > 1) {        
+        document.getElementById("oppCard2").src = "/img/back.png";
+    } else {                    
+        document.getElementById("oppCard2").src = "/img/blank.png";
+    }                          
+    if (handCount > 2) {       
+        document.getElementById("oppCard3").src = "/img/back.png";
+    } else {                    
+        document.getElementById("oppCard3").src = "/img/blank.png";
+    }                           
+    if (handCount > 3) {        
+        document.getElementById("oppCard4").src = "/img/back.png";
+    } else {                     
+        document.getElementById("oppCard4").src = "/img/blank.png";
+    }                            
+    if (handCount > 4) {         
+        document.getElementById("oppCard5").src = "/img/back.png";
+    } else {
+        document.getElementById("oppCard5").src = "/img/blank.png";
     }
 
     document.getElementById("playButton").style.display = "none";

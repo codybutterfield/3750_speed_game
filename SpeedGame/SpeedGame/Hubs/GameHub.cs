@@ -222,9 +222,11 @@ namespace SignalRChat.Hubs
             string exStack1Str = JsonSerializer.Serialize(ExStack1Stack);
             string exStack2Str = JsonSerializer.Serialize(ExStack2Stack);
             string playStack1Top = JsonSerializer.Serialize(PlayStack1Stack.Peek());
+
+            int handCount = hand.Count();
            
-            await Clients.Client(p1).SendAsync("UpdateGame", handStr, playerDrawStackStr, playStack1Str, exStack1Str, exStack2Str, playStack1Top, stackNum);
-            await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, stackNum);
+            await Clients.Client(p1).SendAsync("UpdateGame", handStr, playerDrawStackStr, playStack1Str, exStack1Str, exStack2Str, playStack1Top, stackNum, handCount);
+            await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, stackNum, handCount);
         }
 
         public override Task OnConnectedAsync()
