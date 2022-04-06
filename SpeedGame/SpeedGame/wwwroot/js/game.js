@@ -10,11 +10,13 @@ var PlayStack1JS;
 var PlayStack2JS;
 var ExStack1JS;
 var ExStack2JS;
+var PlayStack1JSTop;
+var PlayStack2JSTop;
 
 //Disable the send button until connection is established.
 document.getElementById("playButton").disabled = true;
 
-connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1, playStack2, exStack1, exStack2) {
+connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1, playStack2, exStack1, exStack2, playStack1Top, playStack2Top) {
     HandJS = JSON.parse(playerStack);
     OpponentHandCountJS = oppStackCount;
     PlayerDrawStackJS = JSON.parse(playerDrawStack);
@@ -23,12 +25,14 @@ connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStac
     PlayStack2JS = JSON.parse(playStack2);
     ExStack1JS = JSON.parse(exStack1);
     ExStack2JS = JSON.parse(exStack2);
+    PlayStack1JSTop = JSON.parse(playStack1Top);
+    PlayStack2JSTop = JSON.parse(playStack2Top);
 
     document.getElementById("playerStackCt").innerHTML = "Your Stack: " + PlayerDrawStackJS.length + " Cards";
     document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + OpponentDrawStackCountJS + " Cards";
 
-    document.getElementById("playStack1").src = PlayStack1JS.associatedImg; /*Might not work*/
-    document.getElementById("playStack2").src = PlayStack2JS.associatedImg; /*Might not work*/
+    document.getElementById("playStack1").src = PlayStack1JSTop.associatedImg;
+    document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
 
     document.getElementById("playerCard1").src = HandJS[0].associatedImg;
     document.getElementById("playerCard2").src = HandJS[1].associatedImg;
@@ -52,7 +56,7 @@ document.getElementById("playButton").addEventListener("click", function (event)
 });
 
 document.getElementById("playerCard1").addEventListener("click", function (event) {
-    selected = 0;
+    Selected = 0;
     document.getElementById("playerCard1").border = 1;
     document.getElementById("playerCard2").border = 0;
     document.getElementById("playerCard3").border = 0;
@@ -61,7 +65,7 @@ document.getElementById("playerCard1").addEventListener("click", function (event
 })
 
 document.getElementById("playerCard2").addEventListener("click", function (event) {
-    selected = 1;
+    Selected = 1;
     document.getElementById("playerCard1").border = 0;
     document.getElementById("playerCard2").border = 1;
     document.getElementById("playerCard3").border = 0;
@@ -69,7 +73,7 @@ document.getElementById("playerCard2").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 0;
 })
 document.getElementById("playerCard3").addEventListener("click", function (event) {
-    selected = 2;
+    Selected = 2;
     document.getElementById("playerCard1").border = 0;
     document.getElementById("playerCard2").border = 0;
     document.getElementById("playerCard3").border = 1;
@@ -77,7 +81,7 @@ document.getElementById("playerCard3").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 0;
 })
 document.getElementById("playerCard4").addEventListener("click", function (event) {
-    selected = 3;
+    Selected = 3;
     document.getElementById("playerCard1").border = 0;
     document.getElementById("playerCard2").border = 0;
     document.getElementById("playerCard3").border = 0;
@@ -86,7 +90,7 @@ document.getElementById("playerCard4").addEventListener("click", function (event
 
 })
 document.getElementById("playerCard5").addEventListener("click", function (event) {
-    selected = 4;
+    Selected = 4;
     document.getElementById("playerCard1").border = 0;
     document.getElementById("playerCard2").border = 0;
     document.getElementById("playerCard3").border = 0;
@@ -94,15 +98,13 @@ document.getElementById("playerCard5").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 1;
 })
 document.getElementById("playStack1").addEventListener("click", function (event) {
-    console.log("Hand1: " + HandJS[0])
-    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(/*everything*/)).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), JSON.stringify(OpponentDrawStackCountJS), JSON.stringify(PlayStack1JSTop), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
 document.getElementById("playStack2").addEventListener("click", function (event) {
-    console.log("hand2: " + HandJS[0])
-    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected])).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), JSON.stringify(OpponentDrawStackCountJS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();

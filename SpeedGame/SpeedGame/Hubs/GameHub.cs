@@ -67,19 +67,25 @@ namespace SignalRChat.Hubs
                 string ds2 = JsonSerializer.Serialize(drawStack2.getDraw());
                 string es1 = JsonSerializer.Serialize(extraStack1.getExtraStack());
                 string es2 = JsonSerializer.Serialize(extraStack2.getExtraStack());
+                string psTop1 = JsonSerializer.Serialize(playStack1.ShowTop());
+                string psTop2 = JsonSerializer.Serialize(playStack2.ShowTop());
 
-                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2);
-                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2);
+                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
+                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task compareCard(string c, string h)
+        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, string OpponentHandCountJS, string PlayerDrawStackJS, string OpponentDrawStackCountJS, string PlayStack1JSTop, string PlayStack2JS, string exStack1, string exStack2)
         {
-            Card card = JsonSerializer.Deserialize<Card>(c);
-            Card hand = JsonSerializer.Deserialize<Card>(h);
+            Card card = JsonSerializer.Deserialize<Card>(PlayStack1JSTop);
+            Card cardFromHand = JsonSerializer.Deserialize<Card>(CardFromHand);
 
-            if (hand.Value == 14)
+            //Make Stacks
+            List<Card> hand = JsonSerializer.Deserialize<List<Card>>(Hand);
+
+
+            if (cardFromHand.Value == 14)
             {
                 if (card.Value == 13 || card.Value == 2)
                 {
@@ -88,12 +94,12 @@ namespace SignalRChat.Hubs
             }
             else if (card.Value == 14)
             {
-                if (hand.Value == 13 || hand.Value == 2)
+                if (cardFromHand.Value == 13 || cardFromHand.Value == 2)
                 {
                     Console.WriteLine("Middle");
                 }
             }
-            else if (hand.Value == card.Value + 1 || hand.Value == card.Value - 1)
+            else if (cardFromHand.Value == card.Value + 1 || cardFromHand.Value == card.Value - 1)
             {
                 Console.WriteLine("Bottom");
             }
