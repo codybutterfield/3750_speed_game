@@ -76,7 +76,7 @@ namespace SignalRChat.Hubs
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, int OpponentHandCountJS, string PlayerDrawStackJS, int OpponentDrawStackCountJS, string PlayStack1JSTop, string exStack1, string exStack2)
+        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, int OpponentHandCountJS, string PlayerDrawStackJS, int OpponentDrawStackCountJS, string PlayStack1JSTop, string exStack1, string exStack2, int stackNum)
         {
             Card card = JsonSerializer.Deserialize<Card>(PlayStack1JSTop);
             Card cardFromHand = JsonSerializer.Deserialize<Card>(CardFromHand);
@@ -91,7 +91,7 @@ namespace SignalRChat.Hubs
 
             Stack<Card> playerDrawStackStack = new Stack<Card>();
             Stack<Card> PlayStack1Stack = new Stack<Card>();
-            Stack<Card> PlayStack2Stack = new Stack<Card>();
+            /*Stack<Card> PlayStack2Stack = new Stack<Card>();*/
             Stack<Card> ExStack1Stack = new Stack<Card>();
             Stack<Card> ExStack2Stack = new Stack<Card>();
 
@@ -125,17 +125,24 @@ namespace SignalRChat.Hubs
                 ExStack2Stack.Push(c);
             }
 
-
+            int pos = 0;
             if (cardFromHand.Value == 14)
             {
                 if (card.Value == 13 || card.Value == 2)
                 {
                     Console.WriteLine("Top");
                     PlayStack1Stack.Push(cardFromHand);
-                    hand.Remove(cardFromHand);
+                    for (int i = 0; i < hand.Count; i++)
+                    {
+                        if (hand[i].Name.CompareTo(cardFromHand.Name) == 0)
+                        {
+                            pos = i;
+                            hand.RemoveAt(i);
+                        }
+                    }
                     if (playerDrawStackStack.Count != 0)
                     {
-                        hand.Add(playerDrawStackStack.Pop());
+                        hand.Insert(pos, playerDrawStackStack.Pop());
                     } 
                     else if (hand.Count == 0)
                     {
@@ -149,10 +156,17 @@ namespace SignalRChat.Hubs
                 {
                     Console.WriteLine("Top");
                     PlayStack1Stack.Push(cardFromHand);
-                    hand.Remove(cardFromHand);
+                    for (int i = 0; i < hand.Count; i++)
+                    {
+                        if (hand[i].Name.CompareTo(cardFromHand.Name) == 0)
+                        {
+                            pos = i;
+                            hand.RemoveAt(i);
+                        }
+                    }
                     if (playerDrawStackStack.Count != 0)
                     {
-                        hand.Add(playerDrawStackStack.Pop());
+                        hand.Insert(pos, playerDrawStackStack.Pop());
                     }
                     else if (hand.Count == 0)
                     {
@@ -164,10 +178,18 @@ namespace SignalRChat.Hubs
             {
                 Console.WriteLine("Top");
                 PlayStack1Stack.Push(cardFromHand);
-                hand.Remove(cardFromHand);
+                for (int i = 0; i < hand.Count; i++)
+                {
+                    if (hand[i].Name.CompareTo(cardFromHand.Name) == 0)
+                    {
+                        pos = i;
+                        hand.RemoveAt(i);
+                        break;
+                    }
+                }
                 if (playerDrawStackStack.Count != 0)
                 {
-                    hand.Add(playerDrawStackStack.Pop());
+                    hand.Insert(pos, playerDrawStackStack.Pop());
                 }
                 else if (hand.Count == 0)
                 {
@@ -194,17 +216,15 @@ namespace SignalRChat.Hubs
                 p2 = cIds[0];
             }
 
-           /* string handStr = JsonSerializer.Serialize(hand);
+            string handStr = JsonSerializer.Serialize(hand);
             string playerDrawStackStr = JsonSerializer.Serialize(playerDrawStackStack);
             string playStack1Str = JsonSerializer.Serialize(PlayStack1Stack);
-            string playStack2Str = JsonSerializer.Serialize(PlayStack2Stack);
             string exStack1Str = JsonSerializer.Serialize(ExStack1Stack);
             string exStack2Str = JsonSerializer.Serialize(ExStack2Stack);
             string playStack1Top = JsonSerializer.Serialize(PlayStack1Stack.Peek());
-            string playStack2Top = JsonSerializer.Serialize(PlayStack2Stack.Peek());
-
-            await Clients.Client(p1).SendAsync("UpdateGame", handStr, playerDrawStackStr, playStack1Str, playStack2Str, exStack1Str, exStack2Str, playStack1Top, playStack2Top);
-            await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, playStack2Top);*/
+           
+            await Clients.Client(p1).SendAsync("UpdateGame", handStr, playerDrawStackStr, playStack1Str, exStack1Str, exStack2Str, playStack1Top, stackNum);
+            await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, stackNum);
         }
 
         public override Task OnConnectedAsync()
