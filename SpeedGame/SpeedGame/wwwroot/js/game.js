@@ -1,34 +1,42 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
-var selected;
-var hand1;
-var Playstack1;
-var Playstack2;
+var Selected;
+var HandJS;
+var OpponentHandCountJS;
+var PlayerDrawStackJS;
+var OpponentDrawStackCountJS;
+var PlayStack1JS;
+var PlayStack2JS;
+var ExStack1JS;
+var ExStack2JS;
+
 //Disable the send button until connection is established.
 document.getElementById("playButton").disabled = true;
 
-connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1Top, playStack2Top, exStack1Flg, exStack2Flg) {
-    var playerHand = JSON.parse(playerStack);
-    var playStack1 = JSON.parse(playStack1Top);
-    var playStack2 = JSON.parse(playStack2Top);
-    var playerDS = JSON.parse(playerDrawStack);
-    Playstack1 = playStack1;
-    Playstack2 = playStack2;
-    hand1 = playerStack;
-    document.getElementById("playerStackCt").innerHTML = "Your Stack: " + playerDS.length + " Cards";
-    document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + oppDrawStackCt + " Cards";
+connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1, playStack2, exStack1, exStack2) {
+    HandJS = JSON.parse(playerStack);
+    OpponentHandCountJS = oppStackCount;
+    PlayerDrawStackJS = JSON.parse(playerDrawStack);
+    OpponentDrawStackCountJS = oppDrawStackCt;
+    PlayStack1JS = JSON.parse(playStack1);
+    PlayStack2JS = JSON.parse(playStack2);
+    ExStack1JS = JSON.parse(exStack1);
+    ExStack2JS = JSON.parse(exStack2);
 
-    document.getElementById("playStack1").src = playStack1.associatedImg;
-    document.getElementById("playStack2").src = playStack2.associatedImg;
+    document.getElementById("playerStackCt").innerHTML = "Your Stack: " + PlayerDrawStackJS.length + " Cards";
+    document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + OpponentDrawStackCountJS + " Cards";
 
-    document.getElementById("playerCard1").src = playerHand[0].associatedImg;
-    document.getElementById("playerCard2").src = playerHand[1].associatedImg;
-    document.getElementById("playerCard3").src = playerHand[2].associatedImg;
-    document.getElementById("playerCard4").src = playerHand[3].associatedImg;
-    document.getElementById("playerCard5").src = playerHand[4].associatedImg;
+    document.getElementById("playStack1").src = PlayStack1JS.associatedImg; /*Might not work*/
+    document.getElementById("playStack2").src = PlayStack2JS.associatedImg; /*Might not work*/
+
+    document.getElementById("playerCard1").src = HandJS[0].associatedImg;
+    document.getElementById("playerCard2").src = HandJS[1].associatedImg;
+    document.getElementById("playerCard3").src = HandJS[2].associatedImg;
+    document.getElementById("playerCard4").src = HandJS[3].associatedImg;
+    document.getElementById("playerCard5").src = HandJS[4].associatedImg;
     document.getElementById("playButton").style.display = "none";
-});                                              
+});
 
 connection.start().then(function () {
     document.getElementById("playButton").disabled = false;
@@ -86,13 +94,15 @@ document.getElementById("playerCard5").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 1;
 })
 document.getElementById("playStack1").addEventListener("click", function (event) {
-    connection.invoke("compareCard", selected, Playstack1, hand1).catch(function (err) {
+    console.log("Hand1: " + HandJS[0])
+    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(/*everything*/)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
 document.getElementById("playStack2").addEventListener("click", function (event) {
-    connection.invoke("compareCard", selected, JSON.stringify(Playstack2), JSON.stringify(hand1)).catch(function (err) {
+    console.log("hand2: " + HandJS[0])
+    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected])).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();

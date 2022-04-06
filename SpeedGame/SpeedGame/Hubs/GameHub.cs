@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
+using System.Text.Json;
+/*using Newtonsoft.Json;*/
 
 namespace SignalRChat.Hubs
 {
@@ -58,30 +59,49 @@ namespace SignalRChat.Hubs
 
                 extraStack2.CreateExtraStack(deck);
 
-                string p1Hand = JsonConvert.SerializeObject(playerStack1.getHand());
-                string p2Hand = JsonConvert.SerializeObject(playerStack2.getHand());
-                string ps1 = JsonConvert.SerializeObject(playStack1.ShowTop());
-                string ps2 = JsonConvert.SerializeObject(playStack2.ShowTop());
-                string ds1 = JsonConvert.SerializeObject(drawStack1.getDraw());
-                string ds2 = JsonConvert.SerializeObject(drawStack2.getDraw());
+                string p1Hand = JsonSerializer.Serialize(playerStack1.getHand());
+                string p2Hand = JsonSerializer.Serialize(playerStack2.getHand());
+                string ps1 = JsonSerializer.Serialize(playStack1.getPlayStack());
+                string ps2 = JsonSerializer.Serialize(playStack2.getPlayStack());
+                string ds1 = JsonSerializer.Serialize(drawStack1.getDraw());
+                string ds2 = JsonSerializer.Serialize(drawStack2.getDraw());
+                string es1 = JsonSerializer.Serialize(extraStack1.getExtraStack());
+                string es2 = JsonSerializer.Serialize(extraStack2.getExtraStack());
 
-                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, extraStack1.isEmpty(), extraStack2.isEmpty());
-                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, extraStack1.isEmpty(), extraStack2.isEmpty());
+                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2);
+                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2);
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task compareCard(int index, Card c, List<Card> h)
+        public async Task compareCard(string c, string h)
         {
-            if (h[index].Value == c.Value + 1 || h[index].Value == c.Value - 1)
+            Card card = JsonSerializer.Deserialize<Card>(c);
+            Card hand = JsonSerializer.Deserialize<Card>(h);
+
+            if (hand.Value == 14)
             {
-                Console.WriteLine(c.Name);
+                if (card.Value == 13 || card.Value == 2)
+                {
+                    Console.WriteLine("Top");
+                }
+            }
+            else if (card.Value == 14)
+            {
+                if (hand.Value == 13 || hand.Value == 2)
+                {
+                    Console.WriteLine("Middle");
+                }
+            }
+            else if (hand.Value == card.Value + 1 || hand.Value == card.Value - 1)
+            {
+                Console.WriteLine("Bottom");
             }
             else
             {
+                Console.WriteLine("Very Bottom");
                 return;
             }
-
         }
 
         public override Task OnConnectedAsync()

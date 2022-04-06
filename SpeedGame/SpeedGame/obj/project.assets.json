@@ -54,11 +54,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
+      "projectUniqueName": "C:\\Users\\tobyr\\speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
       "projectName": "SpeedGame",
-      "projectPath": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
+      "projectPath": "C:\\Users\\tobyr\\speed_game\\SpeedGame\\SpeedGame\\SpeedGame.csproj",
       "packagesPath": "C:\\Users\\tobyr\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tobyr\\3750_speed_game\\SpeedGame\\SpeedGame\\obj\\",
+      "outputPath": "C:\\Users\\tobyr\\speed_game\\SpeedGame\\SpeedGame\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

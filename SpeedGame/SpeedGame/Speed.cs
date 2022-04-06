@@ -87,7 +87,7 @@ public class Card
                     break;
             }
 
-            switch(Suite.ToString())
+            switch (Suite.ToString())
             {
                 case ("Hearts"):
                     imgSrc += "Heart.png";
@@ -159,7 +159,7 @@ public class PlayerStack
     List<Card> hand = new List<Card>();
     public void CreatePlayerStack(Deck d)
     {
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             hand.Add(d.Cards[0]);
             d.Cards.Remove(d.Cards[0]);
@@ -171,7 +171,7 @@ public class PlayerStack
     }
     public void RemoveFromHand(Card c)
     {
-       hand.Remove(c);
+        hand.Remove(c);
     }
     public List<Card> getHand()
     {
@@ -181,7 +181,7 @@ public class PlayerStack
     {
         List<string> handStr = new List<string>();
         foreach (Card c in hand)
-        {   
+        {
             handStr.Add(c.Name);
         }
         return handStr;
@@ -237,6 +237,11 @@ public class PlayStack
         Card card = stack.Peek();
         return card;
     }
+
+    public Stack<Card> getPlayStack()
+    {
+        return stack;
+    }
 }
 public class ExtraStack
 {
@@ -264,12 +269,17 @@ public class ExtraStack
         }
         return isEmpty;
     }
+
+    public Stack<Card> getExtraStack()
+    {
+        return stack;
+    }
 }
 
 
 public class GameLogic
 {
-   
+
     Card selected;
 
     public void selectedCard(Card c)
