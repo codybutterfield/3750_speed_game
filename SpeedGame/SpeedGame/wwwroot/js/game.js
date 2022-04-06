@@ -39,10 +39,15 @@ connection.on("CreateGame", function (playerStack, oppStackCount, playerDrawStac
     document.getElementById("playerCard3").src = HandJS[2].associatedImg;
     document.getElementById("playerCard4").src = HandJS[3].associatedImg;
     document.getElementById("playerCard5").src = HandJS[4].associatedImg;
+    document.getElementById("exStack1").style.display = "inline";
+    document.getElementById("exStack2").style.display = "inline";
+    document.getElementById("stuckBtn").style.display = "inline";
     document.getElementById("playButton").style.display = "none";
+    document.getElementById("result").className = "d-none";
+
 });
 
-connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, exStack1, exStack2, playStack1Top, stackNum, handCount) {
+connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, exStack1, exStack2, playStack1Top, stackNum, handCount, result) {
     HandJS = JSON.parse(playerStack);
     PlayerDrawStackJS = JSON.parse(playerDrawStack);
     PlayStack1JS = JSON.parse(playStack1);
@@ -84,10 +89,30 @@ connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, 
     } else {
         document.getElementById("playerCard5").src = "/img/blank.png";
     }
+
+    if (result == 1) {
+        document.getElementById("result").innerHTML = "YOU LOSE";
+        document.getElementById("result").className = "d-block";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+
+    } else if (result == 2) {
+        document.getElementById("result").innerHTML = "YOU WIN";
+        document.getElementById("result").className = "d-block";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+    }
+
+
+
     document.getElementById("playButton").style.display = "none";
 });
 
-connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum, handCount) {
+connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum, handCount, result) {
     OpponentDrawStackCountJS = oppDrawStackCt;
 
     document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + OpponentDrawStackCountJS + " Cards";
@@ -126,7 +151,36 @@ connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum
         document.getElementById("oppCard5").src = "/img/blank.png";
     }
 
+    if (result == 1) {
+        document.getElementById("result").innerHTML = "YOU LOSE";
+        document.getElementById("result").className = "d-block";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+
+    } else if (result == 2) {
+        document.getElementById("result").innerHTML = "YOU WIN";
+        document.getElementById("result").className = "d-block";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+    }
+
     document.getElementById("playButton").style.display = "none";
+});
+connection.on("UpdatePlayField", function (playStack1, playStack2, playStack1Top, playStack2Top, exStack1Str, exStack2Str) {
+    PlayStack1JS = JSON.parse(playStack1);
+    PlayStack2JS = JSON.parse(playStack2);
+    PlayStack1JSTop = JSON.parse(playStack1Top);
+    PlayStack2JSTop = JSON.parse(playStack2Top);
+    ExStack1JS = JSON.parse(exStack1Str);
+    ExStack2JS = JSON.parse(exStack2Str);
+
+    document.getElementById("playStack1").src = PlayStack1JSTop.associatedImg;
+    document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
+
 });
 
 connection.start().then(function () {
@@ -195,4 +249,10 @@ document.getElementById("playStack2").addEventListener("click", function (event)
         return console.error(err.toString());
     });
     event.preventDefault();
+});
+document.getElementById("stuckBtn").addEventListener("click", function (event) {
+    
+    connection.invoke("CardFlip", JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS)).catch(function (err) {
+        return console.error(err.toString());
+    })
 });
