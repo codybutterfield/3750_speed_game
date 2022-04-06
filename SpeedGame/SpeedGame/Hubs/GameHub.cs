@@ -76,13 +76,18 @@ namespace SignalRChat.Hubs
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, string OpponentHandCountJS, string PlayerDrawStackJS, string OpponentDrawStackCountJS, string PlayStack1JSTop, string PlayStack2JS, string exStack1, string exStack2)
+        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, int OpponentHandCountJS, string PlayerDrawStackJS, int OpponentDrawStackCountJS, string PlayStack1JSTop, string PlayStack2JS, string exStack1, string exStack2)
         {
             Card card = JsonSerializer.Deserialize<Card>(PlayStack1JSTop);
             Card cardFromHand = JsonSerializer.Deserialize<Card>(CardFromHand);
 
             //Make Stacks
             List<Card> hand = JsonSerializer.Deserialize<List<Card>>(Hand);
+            //List<Card> PlayerDrawStack = JsonSerializer.Deserialize<List<Card>>(PlayerDrawStackJS);
+            string PlayStack1 = JsonSerializer.Deserialize<string>(PlayStack1JS);
+            //List<Card> PlayStack2 = JsonSerializer.Deserialize<List<Card>>(PlayStack2JS);
+            //List<Card> ExStack1 = JsonSerializer.Deserialize<List<Card>>(exStack1);
+            //List<Card> ExStack2 = JsonSerializer.Deserialize<List<Card>>(exStack2);
 
 
             if (cardFromHand.Value == 14)

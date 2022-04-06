@@ -98,13 +98,13 @@ document.getElementById("playerCard5").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 1;
 })
 document.getElementById("playStack1").addEventListener("click", function (event) {
-    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), JSON.stringify(OpponentDrawStackCountJS), JSON.stringify(PlayStack1JSTop), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JSTop), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
 document.getElementById("playStack2").addEventListener("click", function (event) {
-    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), JSON.stringify(OpponentDrawStackCountJS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
