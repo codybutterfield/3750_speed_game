@@ -16,7 +16,7 @@ var PlayStack2JSTop;
 //Disable the send button until connection is established.
 document.getElementById("playButton").disabled = true;
 
-connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1, playStack2, exStack1, exStack2, playStack1Top, playStack2Top) {
+connection.on("CreateGame", function (playerStack, oppStackCount, playerDrawStack, oppDrawStackCt, playStack1, playStack2, exStack1, exStack2, playStack1Top, playStack2Top) {
     HandJS = JSON.parse(playerStack);
     OpponentHandCountJS = oppStackCount;
     PlayerDrawStackJS = JSON.parse(playerDrawStack);
@@ -39,6 +39,42 @@ connection.on("UpdateGame", function (playerStack, oppStackCount, playerDrawStac
     document.getElementById("playerCard3").src = HandJS[2].associatedImg;
     document.getElementById("playerCard4").src = HandJS[3].associatedImg;
     document.getElementById("playerCard5").src = HandJS[4].associatedImg;
+    document.getElementById("playButton").style.display = "none";
+});
+
+connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, playStack2, exStack1, exStack2, playStack1Top, playStack2Top) {
+    HandJS = JSON.parse(playerStack);
+    PlayerDrawStackJS = JSON.parse(playerDrawStack);
+    PlayStack1JS = JSON.parse(playStack1);
+    PlayStack2JS = JSON.parse(playStack2);
+    ExStack1JS = JSON.parse(exStack1);
+    ExStack2JS = JSON.parse(exStack2);
+    PlayStack1JSTop = JSON.parse(playStack1Top);
+    PlayStack2JSTop = JSON.parse(playStack2Top);
+
+    document.getElementById("playerStackCt").innerHTML = "Your Stack: " + PlayerDrawStackJS.length + " Cards";
+
+    document.getElementById("playStack1").src = PlayStack1JSTop.associatedImg;
+    document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
+
+    document.getElementById("playerCard1").src = HandJS[0].associatedImg;
+    document.getElementById("playerCard2").src = HandJS[1].associatedImg;
+    document.getElementById("playerCard3").src = HandJS[2].associatedImg;
+    document.getElementById("playerCard4").src = HandJS[3].associatedImg;
+    document.getElementById("playerCard5").src = HandJS[4].associatedImg;
+    document.getElementById("playButton").style.display = "none";
+});
+
+connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, playStack2Top) {
+    OpponentDrawStackCountJS = oppDrawStackCt;
+    PlayStack1JSTop = JSON.parse(playStack1Top);
+    PlayStack2JSTop = JSON.parse(playStack2Top);
+
+    document.getElementById("opponentStackCt").innerHTML = "Opponent Stack: " + OpponentDrawStackCountJS + " Cards";
+
+    document.getElementById("playStack1").src = PlayStack1JSTop.associatedImg;
+    document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
+
     document.getElementById("playButton").style.display = "none";
 });
 
@@ -98,13 +134,13 @@ document.getElementById("playerCard5").addEventListener("click", function (event
     document.getElementById("playerCard5").border = 1;
 })
 document.getElementById("playStack1").addEventListener("click", function (event) {
-    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JSTop), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack1JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JSTop), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
 });
 document.getElementById("playStack2").addEventListener("click", function (event) {
-    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
+    connection.invoke("compareCard", JSON.stringify(PlayStack2JS), JSON.stringify(HandJS[Selected]), JSON.stringify(HandJS), OpponentHandCountJS, JSON.stringify(PlayerDrawStackJS), OpponentDrawStackCountJS, JSON.stringify(PlayStack1JSTop), JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS)).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();

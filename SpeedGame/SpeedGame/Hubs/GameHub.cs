@@ -70,24 +70,60 @@ namespace SignalRChat.Hubs
                 string psTop1 = JsonSerializer.Serialize(playStack1.ShowTop());
                 string psTop2 = JsonSerializer.Serialize(playStack2.ShowTop());
 
-                await Clients.Client(p1).SendAsync("UpdateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
-                await Clients.Client(p2).SendAsync("UpdateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
+                await Clients.Client(p1).SendAsync("CreateGame", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
+                await Clients.Client(p2).SendAsync("CreateGame", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
             }
             //await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, int OpponentHandCountJS, string PlayerDrawStackJS, int OpponentDrawStackCountJS, string PlayStack1JSTop, string PlayStack2JS, string exStack1, string exStack2)
+        public async Task compareCard(string PlayStack1JS, string CardFromHand, string Hand, int OpponentHandCountJS, string PlayerDrawStackJS, int OpponentDrawStackCountJS, string PlayStack1JSTop, string exStack1, string exStack2)
         {
             Card card = JsonSerializer.Deserialize<Card>(PlayStack1JSTop);
             Card cardFromHand = JsonSerializer.Deserialize<Card>(CardFromHand);
 
             //Make Stacks
             List<Card> hand = JsonSerializer.Deserialize<List<Card>>(Hand);
-            //List<Card> PlayerDrawStack = JsonSerializer.Deserialize<List<Card>>(PlayerDrawStackJS);
-            string PlayStack1 = JsonSerializer.Deserialize<string>(PlayStack1JS);
+            List<Card> PlayerDrawStack = JsonSerializer.Deserialize<List<Card>>(PlayerDrawStackJS);
+            List<Card> PlayStack1 = JsonSerializer.Deserialize<List<Card>>(PlayStack1JS);
             //List<Card> PlayStack2 = JsonSerializer.Deserialize<List<Card>>(PlayStack2JS);
-            //List<Card> ExStack1 = JsonSerializer.Deserialize<List<Card>>(exStack1);
-            //List<Card> ExStack2 = JsonSerializer.Deserialize<List<Card>>(exStack2);
+            List<Card> ExStack1 = JsonSerializer.Deserialize<List<Card>>(exStack1);
+            List<Card> ExStack2 = JsonSerializer.Deserialize<List<Card>>(exStack2);
+
+            Stack<Card> playerDrawStackStack = new Stack<Card>();
+            Stack<Card> PlayStack1Stack = new Stack<Card>();
+            Stack<Card> PlayStack2Stack = new Stack<Card>();
+            Stack<Card> ExStack1Stack = new Stack<Card>();
+            Stack<Card> ExStack2Stack = new Stack<Card>();
+
+            PlayerDrawStack.Reverse();
+            foreach (Card c in PlayerDrawStack)
+            {
+                playerDrawStackStack.Push(c);
+            }
+
+            PlayStack1.Reverse();
+            foreach (Card c in PlayStack1)
+            {
+                PlayStack1Stack.Push(c);
+            }
+
+           /* PlayStack2.Reverse();
+            foreach (Card c in PlayStack2)
+            {
+                PlayStack2Stack.Push(c);
+            }*/
+
+            ExStack1.Reverse();
+            foreach (Card c in ExStack1)
+            {
+                ExStack1Stack.Push(c);
+            }
+
+            ExStack2.Reverse();
+            foreach (Card c in ExStack2)
+            {
+                ExStack2Stack.Push(c);
+            }
 
 
             if (cardFromHand.Value == 14)
@@ -95,24 +131,80 @@ namespace SignalRChat.Hubs
                 if (card.Value == 13 || card.Value == 2)
                 {
                     Console.WriteLine("Top");
+                    PlayStack1Stack.Push(cardFromHand);
+                    hand.Remove(cardFromHand);
+                    if (playerDrawStackStack.Count != 0)
+                    {
+                        hand.Add(playerDrawStackStack.Pop());
+                    } 
+                    else if (hand.Count == 0)
+                    {
+                        Console.WriteLine("Poggers, you win twerp");
+                    }
                 }
             }
             else if (card.Value == 14)
             {
                 if (cardFromHand.Value == 13 || cardFromHand.Value == 2)
                 {
-                    Console.WriteLine("Middle");
+                    Console.WriteLine("Top");
+                    PlayStack1Stack.Push(cardFromHand);
+                    hand.Remove(cardFromHand);
+                    if (playerDrawStackStack.Count != 0)
+                    {
+                        hand.Add(playerDrawStackStack.Pop());
+                    }
+                    else if (hand.Count == 0)
+                    {
+                        Console.WriteLine("Poggers, you win twerp");
+                    }
                 }
             }
             else if (cardFromHand.Value == card.Value + 1 || cardFromHand.Value == card.Value - 1)
             {
-                Console.WriteLine("Bottom");
+                Console.WriteLine("Top");
+                PlayStack1Stack.Push(cardFromHand);
+                hand.Remove(cardFromHand);
+                if (playerDrawStackStack.Count != 0)
+                {
+                    hand.Add(playerDrawStackStack.Pop());
+                }
+                else if (hand.Count == 0)
+                {
+                    Console.WriteLine("Poggers, you win twerp");
+                }
             }
             else
             {
                 Console.WriteLine("Very Bottom");
                 return;
             }
+
+            string p1 = String.Empty; 
+            string p2 = String.Empty;
+            List<string> cIds = UserHandler.ConnectedIds.ToList<string>();
+            if (cIds[0] == Context.ConnectionId)
+            {
+                p1 = cIds[0];
+                p2 = cIds[1];
+            } 
+            else
+            {
+                p1 = cIds[1];
+                p2 = cIds[0];
+            }
+
+           /* string handStr = JsonSerializer.Serialize(hand);
+            string playerDrawStackStr = JsonSerializer.Serialize(playerDrawStackStack);
+            string playStack1Str = JsonSerializer.Serialize(PlayStack1Stack);
+            string playStack2Str = JsonSerializer.Serialize(PlayStack2Stack);
+            string exStack1Str = JsonSerializer.Serialize(ExStack1Stack);
+            string exStack2Str = JsonSerializer.Serialize(ExStack2Stack);
+            string playStack1Top = JsonSerializer.Serialize(PlayStack1Stack.Peek());
+            string playStack2Top = JsonSerializer.Serialize(PlayStack2Stack.Peek());
+
+            await Clients.Client(p1).SendAsync("UpdateGame", handStr, playerDrawStackStr, playStack1Str, playStack2Str, exStack1Str, exStack2Str, playStack1Top, playStack2Top);
+            await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, playStack2Top);*/
         }
 
         public override Task OnConnectedAsync()
