@@ -142,7 +142,7 @@ namespace SignalRChat.Hubs
 
                 await Clients.Client(User).SendAsync("Restart", p1Hand, playerStack2.getHand().Count, ds1, drawStack2.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
                 await Clients.Client(Opponent).SendAsync("Restart", p2Hand, playerStack1.getHand().Count, ds2, drawStack1.getDraw().Count, ps1, ps2, es1, es2, psTop1, psTop2);
-                await Clients.All.SendAsync("UpdatePlayField", ps1, ps2, psTop1, psTop2, es1, es2, 0);
+                await Clients.All.SendAsync("UpdatePlayField", ps1, ps2, psTop1, psTop2, es1, es2, 0, 0);
                 return;
             }
             await Clients.Client(Opponent).SendAsync("PlayAgainChoice", 1);
@@ -303,7 +303,7 @@ namespace SignalRChat.Hubs
             await Clients.Client(p2).SendAsync("UpdateGameOpp", playerDrawStackStack.Count, playStack1Top, stackNum, handCount, res2);
         }
 
-        public async Task CardFlip(string exStack1JS, string exStack2JS, string playStack1JS, string playStack2JS, int opponentStuck)
+        public async Task CardFlip(string exStack1JS, string exStack2JS, string playStack1JS, string playStack2JS, string playStack1JSTop, string playStack2JSTop, int opponentStuck, int playerStuck)
         {
             string[,] stuck = new string[,] { { "0", "0" }, { "0", "0" } };
             List<string> cIds = UserHandler.ConnectedIds.ToList<string>();
@@ -334,31 +334,35 @@ namespace SignalRChat.Hubs
             Stack<Card> ExStack1 = new Stack<Card>();
             Stack<Card> ExStack2 = new Stack<Card>();
 
-            playStack1.Reverse();
-            foreach (Card c in playStack1)
-            {
-                PlayStack1.Push(c);
-            }
-            playStack2.Reverse();
-            foreach (Card c in playStack2)
-            {
-                PlayStack2.Push(c);
-            }
-            exStack1.Reverse();
-            foreach (Card c in exStack1)
-            {
-                ExStack1.Push(c);
-            }
-            exStack2.Reverse();
-            foreach (Card c in exStack2)
-            {
-                ExStack2.Push(c);
-            }
 
-            if (stuck[0,1].Equals("1") && opponentStuck == 1|| stuck[1,1].Equals("1") && opponentStuck == 1)
+            if (opponentStuck == 1 && playerStuck == 1)
             {
                 stuck[0,1] = "0";
                 stuck[1,1] = "0";
+                opponentStuck = 0;
+                playerStuck = 0;
+
+                playStack1.Reverse();
+                foreach (Card c in playStack1)
+                {
+                    PlayStack1.Push(c);
+                }
+                playStack2.Reverse();
+                foreach (Card c in playStack2)
+                {
+                    PlayStack2.Push(c);
+                }
+                exStack1.Reverse();
+                foreach (Card c in exStack1)
+                {
+                    ExStack1.Push(c);
+                }
+                exStack2.Reverse();
+                foreach (Card c in exStack2)
+                {
+                    ExStack2.Push(c);
+                }
+
                 if (ExStack1.Count == 0)
                 {
                     Stack<Card> shuffleStack = new Stack<Card>();
@@ -372,7 +376,9 @@ namespace SignalRChat.Hubs
                     {
                         shuffleStack.Push(PlayStack2.Pop());
                     }
-                    for (int i = 0; i < 5; i++)
+
+                    count = (shuffleStack.Count()/2)-1;
+                    for (int i = 0; i < count; i++)
                     {
                         ExStack1.Push((Card)shuffleStack.Pop());
                         ExStack2.Push((Card)shuffleStack.Pop());
@@ -393,18 +399,13 @@ namespace SignalRChat.Hubs
                 string exStack1Str = JsonSerializer.Serialize(ExStack1);
                 string exStack2Str = JsonSerializer.Serialize(ExStack2);
 
-                await Clients.All.SendAsync("UpdatePlayField", playStack1Str, playStack2Str, playStack1Top, playStack2Top, exStack1Str, exStack2Str, 0);
+                await Clients.All.SendAsync("UpdatePlayField", playStack1Str, playStack2Str, playStack1Top, playStack2Top, exStack1Str, exStack2Str, opponentStuck, playerStuck);
             }
             else
             {
-                string playStack1Str = JsonSerializer.Serialize(PlayStack1);
-                string playStack2Str = JsonSerializer.Serialize(PlayStack2);
-                string playStack1Top = JsonSerializer.Serialize(PlayStack1.Peek());
-                string playStack2Top = JsonSerializer.Serialize(PlayStack2.Peek());
-                string exStack1Str = JsonSerializer.Serialize(ExStack1);
-                string exStack2Str = JsonSerializer.Serialize(ExStack2);
-                await Clients.Client(User).SendAsync("UpdatePlayField", playStack1Str, playStack2Str, playStack1Top, playStack2Top, exStack1Str, exStack2Str, 0);
-                await Clients.Client(Opponent).SendAsync("UpdatePlayField", playStack1Str, playStack2Str, playStack1Top, playStack2Top, exStack1Str, exStack2Str, 1);
+
+                await Clients.Client(User).SendAsync("UpdatePlayField", playStack1JS, playStack2JS, playStack1JSTop, playStack2JSTop, exStack1JS, exStack2JS, opponentStuck, playerStuck);
+                await Clients.Client(Opponent).SendAsync("UpdatePlayField", playStack1JS, playStack2JS, playStack1JSTop, playStack2JSTop, exStack1JS, exStack2JS, playerStuck, opponentStuck);
             }
         }
 

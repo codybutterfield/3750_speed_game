@@ -32,6 +32,7 @@ connection.on("CreateGame", function (playerStack, oppStackCount, playerDrawStac
     PlayStack1JSTop = JSON.parse(playStack1Top);
     PlayStack2JSTop = JSON.parse(playStack2Top);
     OpponentStuck = 0;
+    PlayerStuck = 0;
     PlayAgain = 0
 
     document.getElementById("playerStackCt").innerHTML = "Your Stack: " + PlayerDrawStackJS.length + " Cards";
@@ -66,6 +67,7 @@ connection.on("Restart", function (playerStack, oppStackCount, playerDrawStack, 
     PlayStack1JSTop = JSON.parse(playStack1Top);
     PlayStack2JSTop = JSON.parse(playStack2Top);
     OpponentStuck = 0;
+    PlayerStuck = 0;
     PlayAgain = 0;
     document.getElementById("playStack2").style.display = "inline";
     document.getElementById("playStack1").style.display = "inline";
@@ -237,7 +239,7 @@ connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum
 
     document.getElementById("playButton").style.display = "none";
 });
-connection.on("UpdatePlayField", function (playStack1, playStack2, playStack1Top, playStack2Top, exStack1Str, exStack2Str, opponentStuck) {
+connection.on("UpdatePlayField", function (playStack1, playStack2, playStack1Top, playStack2Top, exStack1Str, exStack2Str, opponentStuck, playerStuck) {
     PlayStack1JS = JSON.parse(playStack1);
     PlayStack2JS = JSON.parse(playStack2);
     PlayStack1JSTop = JSON.parse(playStack1Top);
@@ -245,6 +247,13 @@ connection.on("UpdatePlayField", function (playStack1, playStack2, playStack1Top
     ExStack1JS = JSON.parse(exStack1Str);
     ExStack2JS = JSON.parse(exStack2Str);
     OpponentStuck = opponentStuck;
+    PlayerStuck = playerStuck;
+
+    if (PlayerStuck == 1) {
+        document.getElementById("stuckBtn").className = "px-3 btn btn-danger";
+    } else {
+        document.getElementById("stuckBtn").className = "px-3 btn btn-primary";
+    }
 
     document.getElementById("playStack1").src = PlayStack1JSTop.associatedImg;
     document.getElementById("playStack2").src = PlayStack2JSTop.associatedImg;
@@ -332,12 +341,12 @@ document.getElementById("stuckBtn").addEventListener("click", function (event) {
 
     PlayerStuck = (PlayerStuck + 1) % 2;
     if (PlayerStuck == 1) {
-        document.getElementById("stuckBtn").className = "px-3 btn btn-success";
+        document.getElementById("stuckBtn").className = "px-3 btn btn-danger";
     } else {
         document.getElementById("stuckBtn").className = "px-3 btn btn-primary";
     }
 
-    connection.invoke("CardFlip", JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), OpponentStuck).catch(function (err) {
+    connection.invoke("CardFlip", JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), JSON.stringify(PlayStack1JSTop), JSON.stringify(PlayStack2JSTop), OpponentStuck, PlayerStuck).catch(function (err) {
         return console.error(err.toString());
     })
 });
