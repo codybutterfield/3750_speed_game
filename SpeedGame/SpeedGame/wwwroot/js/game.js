@@ -46,8 +46,9 @@ connection.on("CreateGame", function (playerStack, oppStackCount, playerDrawStac
     document.getElementById("playerCard5").src = HandJS[4].associatedImg;
     document.getElementById("exStack1").style.display = "inline";
     document.getElementById("exStack2").style.display = "inline";
-    document.getElementById("stuckBtn").style.display = "inline";
+    document.getElementById("stuckBtn").style.visibility = "visible";
     document.getElementById("playButton").style.display = "none";
+    document.getElementById("playAgainButton").style.visibility = "hidden";
     document.getElementById("result").className = "d-none";
 
 });
@@ -89,8 +90,9 @@ connection.on("Restart", function (playerStack, oppStackCount, playerDrawStack, 
 
     document.getElementById("exStack1").style.display = "inline";
     document.getElementById("exStack2").style.display = "inline";
-    document.getElementById("stuckBtn").style.display = "inline";
+    document.getElementById("stuckBtn").style.visibility = "visible";
     document.getElementById("playButton").style.display = "none";
+    document.getElementById("playAgainButton").style.visibility = "hidden";
     document.getElementById("result").className = "d-none";
 
 });
@@ -141,20 +143,23 @@ connection.on("UpdateGame", function (playerStack, playerDrawStack, playStack1, 
     if (result == 1) {
         document.getElementById("result").innerHTML = "YOU LOSE";
         document.getElementById("result").className = "d-block";
-        document.getElementById("playStack2").style.display = "hidden";
-        document.getElementById("playStack1").style.display = "hidden";
-        document.getElementById("exStack1").style.display = "hidden";
-        document.getElementById("exStack2").style.display = "hidden";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+        document.getElementById("stuckBtn").style.visibility = "hidden";
+
         document.getElementById("playAgainButton").style.visibility = "visible";
-        document.getElementById("playAgainButton").disabled = true;
+        document.getElementById("playAgainButton").disabled = false;
 
     } else if (result == 2) {
         document.getElementById("result").innerHTML = "YOU WIN";
         document.getElementById("result").className = "d-block";
-        document.getElementById("playStack2").style.display = "hidden";
-        document.getElementById("playStack1").style.display = "hidden";
-        document.getElementById("exStack1").style.display = "hidden";
-        document.getElementById("exStack2").style.display = "hidden";
+        document.getElementById("playStack2").style.display = "none";
+        document.getElementById("playStack1").style.display = "none";
+        document.getElementById("exStack1").style.display = "none";
+        document.getElementById("exStack2").style.display = "none";
+        document.getElementById("stuckBtn").style.visibility = "hidden";
 
         document.getElementById("playAgainButton").style.visibility = "visible";
         document.getElementById("playAgainButton").disabled = false;
@@ -211,6 +216,10 @@ connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum
         document.getElementById("playStack1").style.display = "none";
         document.getElementById("exStack1").style.display = "none";
         document.getElementById("exStack2").style.display = "none";
+        document.getElementById("stuckBtn").style.visibility = "hidden";
+
+        document.getElementById("playAgainButton").style.visibility = "visible";
+        document.getElementById("playAgainButton").disabled = false;
 
     } else if (result == 2) {
         document.getElementById("result").innerHTML = "YOU WIN";
@@ -219,6 +228,10 @@ connection.on("UpdateGameOpp", function (oppDrawStackCt, playStack1Top, stackNum
         document.getElementById("playStack1").style.display = "none";
         document.getElementById("exStack1").style.display = "none";
         document.getElementById("exStack2").style.display = "none";
+        document.getElementById("stuckBtn").style.visibility = "hidden";
+
+        document.getElementById("playAgainButton").style.visibility = "visible";
+        document.getElementById("playAgainButton").disabled = false;
     }
 
     document.getElementById("playButton").style.display = "none";
