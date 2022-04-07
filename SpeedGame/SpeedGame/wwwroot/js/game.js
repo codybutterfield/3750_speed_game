@@ -3,6 +3,7 @@
 var connection = new signalR.HubConnectionBuilder().withUrl("/gameHub").build();
 var Selected;
 var OpponentStuck;
+var PlayerStuck;
 var PlayAgain;
 var HandJS;
 var OpponentHandCountJS;
@@ -328,7 +329,14 @@ document.getElementById("playStack2").addEventListener("click", function (event)
     event.preventDefault();
 });
 document.getElementById("stuckBtn").addEventListener("click", function (event) {
-    
+
+    PlayerStuck = (PlayerStuck + 1) % 2;
+    if (PlayerStuck == 1) {
+        document.getElementById("stuckBtn").className = "px-3 btn btn-success";
+    } else {
+        document.getElementById("stuckBtn").className = "px-3 btn btn-primary";
+    }
+
     connection.invoke("CardFlip", JSON.stringify(ExStack1JS), JSON.stringify(ExStack2JS), JSON.stringify(PlayStack1JS), JSON.stringify(PlayStack2JS), OpponentStuck).catch(function (err) {
         return console.error(err.toString());
     })
